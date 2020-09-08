@@ -290,18 +290,21 @@
 	
 	function preliminaryValidation(txt) {
 		var fileLines = txt.split("\n");
+
 		fileLines.forEach(function (element, index) {
 			var lineNumber = index + 1;
-			if(element.length!==95 && lineNumber!==fileLines.length) { //ensure lines are 94 characters long, but newline counts as a character in JavaScript
+			console.log('element: ', element, '; element.length: ' + element.length);
+
+			if (element.length !== 94 && lineNumber !== fileLines.length) { //ensure lines are 94 characters long, but newline counts as a character in JavaScript
 				//also ignore last line
 				alert("Line " + lineNumber + " is not 94 characters long!  This file cannot be processed. \nIt is " + element.length + " characters long.");
-			} else if(lineNumber == fileLines.length && element.length > 2) { //ignore if the last line is empty or has a newline only
+			} else if (lineNumber == fileLines.length && element.length > 2) { //ignore if the last line is empty or has a newline only
 				alert("Line " + lineNumber + " is not 94 characters long!  This file cannot be processed. \nIt is " + element.length + " characters long.");
 			}
 		});
+
 		var lastLine = fileLines.length - 1;
-		
-		if(lastLine % 10 !==0) {
+		if (lastLine % 10 !== 0) {
 			alert("The number of lines in this file are not evenly divided by 10.  It is " + lastLine + " lines long.\nYou should fill lines with 9s to end with a number of lines that is an increment of 10.\nThis file should still process successfully, but it is not up to NACHA specs.");
 		}
 	}
