@@ -95,7 +95,7 @@ function processAndFormat(txt) {
 					case "0": //File Control
 						output[index] = "<h2>FILE CONTROL</h2><table><tr><th>Batch Count</th><th>Entry/Addenda Count</th><th>Entry Hash</th><th>Total Debit Entry Amount</th><th>Total Credit Entry Amount"
 							+ "</th></tr><tr><td id='fileBatchCount'>" + element.substring(1, 7) + "</td><td id='fileEntryCount'>" + element.substring(13, 21) + "</td><td id='fileEntryHash'>" + element.substring(21, 31) + "</td><td class='dollarAmount' id='fileDebitAmount'>$"
-							+ numberWithCommas((Number(element.substring(31, 43)) / 100).toFixed(2)) + "</td><td class='dollarAmount'id='fileCreditAmount'>$" + numberWithCommas((Number(element.substring(43, 55)) / 100).toFixed(2)) + "</td></tr></table>";
+							+ numberWithCommas((Number(element.substring(31, 43)) / 100).toFixed(2)) + "</td><td class='dollarAmount' id='fileCreditAmount'>$" + numberWithCommas((Number(element.substring(43, 55)) / 100).toFixed(2)) + "</td></tr></table>";
 						break;
 					case "9": //Filler
 						break;
@@ -241,11 +241,11 @@ function validateBatchRoutingNumberHash() {
 				var hashToCompare = Number(thisBatchEntryHash.innerHTML);
 
 				if (hashToCompare.length > 10) {
-					hashToCompare = hashToCompare.substr(hashToCompare.length - 10);
+					hashToCompare = Number(hashToCompare.substr(hashToCompare.toString().length - 10));
 				}
 
-				if (count.length > 10) {
-					count = count.substr(count.length - 10);
+				if (count.toString().length > 10) {
+					count = Number(count.toString().substr(count.toString().length - 10));
 				}
 
 				if (count === hashToCompare) {
@@ -375,13 +375,20 @@ function validateFileRoutingNumberHash() {
 
 	var fileEntryHash = document.getElementById("fileEntryHash");
 	var hashToCompare = Number(fileEntryHash.innerHTML);
+	console.log(`hashToCompare:>>>${hashToCompare}<<<`);
 	if (hashToCompare.length > 10) {
 		hashToCompare = hashToCompare.substr(hashToCompare.length - 10);
 	}
 
-	if (count.length > 10) {
-		count = count.substr(count.length - 10);
+	if (count.toString().length > 10) {
+		// console.log('length of count: ' + count.toString().length);
+		// console.log('Starting index: ', count.toString().length - 10);
+		const newCountStr = count.toString().substr(count.toString().length - 10);
+		console.log(`newCountStr:>>>${newCountStr}<<<`);
+		
+		count = parseInt(newCountStr);
 	}
+	// console.log(`count:>>>${count}<<<`);
 
 	if (count === hashToCompare) {
 		fileEntryHash.style.backgroundColor = "#00FF00";
